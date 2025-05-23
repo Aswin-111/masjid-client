@@ -38,6 +38,8 @@ const StatCard = ({
 function Dashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [adminData, setAdminData] = useState({});
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const router = useRouter();
@@ -135,6 +137,27 @@ function Dashboard() {
                 )}
               </button>
               {/* Logo/Title */}
+              <div className="absolute left-5">
+                <button
+                  onClick={() => setIsSidebarOpen(true)}
+                  className="rounded-md p-2 text-gray-700 hover:bg-gray-300"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="white"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                    />
+                  </svg>
+                </button>
+              </div>
               <div className="flex-shrink-0">
                 <span className="text-xl font-semibold">Masjid Management</span>
               </div>
@@ -168,56 +191,84 @@ function Dashboard() {
         </div>
 
         {/* Mobile menu, show/hide based on menu state. */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden" id="mobile-menu">
-            <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-              {/* Mobile Nav links Placeholder - Add your actual links here */}
-              <a
-                href="#"
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-200 hover:bg-green-600 hover:text-white"
-              >
-                Dashboard
-              </a>
-              <a
-                href="#"
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-200 hover:bg-green-600 hover:text-white"
-              >
-                Members
-              </a>
-              <a
-                href="#"
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-200 hover:bg-green-600 hover:text-white"
-              >
-                Events
-              </a>
-            </div>
-            {/* Mobile Action Icons */}
-            <div className="border-t border-green-600 pb-3 pt-4">
-              <div className="flex items-center px-5">
-                <button className="rounded-full p-1 text-gray-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-700">
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-              </div>
-              <div className="mt-3 space-y-1 px-2">
-                <button
-                  className="flex w-full items-center rounded-md px-3 py-2 text-base font-medium text-gray-200 hover:bg-green-600 hover:text-white"
-                  onClick={() => {
-                    localStorage.removeItem("masjid_access_jwt_token");
-                    router.push("/login");
-                  }}
-                >
-                  <ArrowLeftOnRectangleIcon
-                    className="mr-2 h-5 w-5"
-                    aria-hidden="true"
-                  />
-                  Logout
-                </button>
-              </div>
-            </div>
+        {/* Responsive Slide-in Left Sidebar */}
+        <div
+          className={`fixed top-0 left-0 z-50 h-full w-64 transform bg-green-700 text-white shadow-lg transition-transform duration-300 ease-in-out ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } md:hidden`} // Only shows on mobile
+        >
+          <div className="flex items-center justify-between border-b border-green-600 p-4">
+            <h2 className="font-semibold text-white text-lg">Menu</h2>
+            <button onClick={() => setIsSidebarOpen(false)}>
+              <XMarkIcon className="h-6 w-6 text-white" />
+            </button>
           </div>
-        )}
+          <nav className="p-4 space-y-3 bg-green-500">
+            <a
+              href="#"
+              className="block rounded px-3 py-2 text-white hover:bg-green-600"
+            >
+              Dashboard
+            </a>
+            <a
+              href="#"
+              className="block rounded px-3 py-2 text-white hover:bg-green-600"
+            >
+              Masjids
+            </a>
+            <a
+              href="#"
+              className="block rounded px-3 py-2 text-white hover:bg-green-600"
+            >
+              Members
+            </a>
+            <a
+              href="#"
+              className="block rounded px-3 py-2 text-white hover:bg-green-600"
+            >
+              Events
+            </a>
+            <button
+              className="mt-4 flex w-full items-center justify-start rounded px-3 py-2 hover:bg-green-600"
+              onClick={() => {
+                localStorage.removeItem("masjid_access_jwt_token");
+                router.push("/login");
+              }}
+            >
+              <ArrowLeftOnRectangleIcon className="mr-2 h-5 w-5" />
+              Logout
+            </button>
+          </nav>
+        </div>
       </nav>
+      {/* Left Sidebar Toggle Button */}
+      {/* Slide-in Left Sidebar */}
+      <div
+        className={`fixed top-0 left-0 z-50 h-full w-64 transform bg-[#008236] text-white shadow-lg transition-transform duration-300 ease-in-out ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between border-b p-4">
+          <h2 className="font-semibold text-white">Menu</h2>
+          <button onClick={() => setIsSidebarOpen(false)}>
+            <XMarkIcon className="h-5 w-5 text-white " />
+          </button>
+        </div>
+        <nav className="p-4 space-y-2">
+          <a
+            href="/superadmin/edit-masjids"
+            className="block text-white hover:text-green-600"
+          >
+            Edit masjid
+          </a>
+          <a
+            href="/superadmin/edit-members"
+            className="block text-white hover:text-green-600"
+          >
+            Edit members
+          </a>
+        </nav>
+      </div>
 
       {/* Main Content Area */}
       <main className="flex-grow p-4 md:p-8">

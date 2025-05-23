@@ -39,7 +39,7 @@ function Login() {
       } else {
         router.push("/admin/dashboard");
       }
-    }
+    }``
   }, []);
 
   const handleSubmit = async (event) => {

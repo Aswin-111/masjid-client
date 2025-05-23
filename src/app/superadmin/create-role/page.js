@@ -65,7 +65,7 @@ function CreateRoleForm() {
     console.log("Submitting new role:", formData);
     const { roleName, description, selectedMasjid } = formData;
 
-    if (!roleName || !description || !selectedMasjid) {
+    if (!roleName || !selectedMasjid) {
       toast.error("Please fill in all fields.");
       return;
     }

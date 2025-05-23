@@ -38,6 +38,7 @@ const StatCard = ({
 function Dashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [adminData, setAdminData] = useState({});
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const router = useRouter();
   const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -216,6 +217,39 @@ function Dashboard() {
           </div>
         )}
       </nav>
+      {/* Left Hamburger Menu Button */}
+      <div className="md:hidden p-4">
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="rounded-md p-2 text-gray-700 hover:bg-gray-300"
+        >
+          <Bars3Icon className="h-6 w-6" />
+        </button>
+      </div>
+      {/* Slide-in Sidebar from Left */}
+      <div
+        className={`fixed top-0 left-0 z-40 h-full w-64 transform bg-white shadow-lg transition-transform duration-300 ease-in-out ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between border-b p-4">
+          <span className="font-semibold text-gray-700">Menu</span>
+          <button onClick={() => setIsSidebarOpen(false)}>
+            <XMarkIcon className="h-5 w-5 text-gray-600" />
+          </button>
+        </div>
+        <nav className="p-4 space-y-2">
+          <a href="#" className="block text-gray-700 hover:text-green-600">
+            Dashboard
+          </a>
+          <a href="#" className="block text-gray-700 hover:text-green-600">
+            Members
+          </a>
+          <a href="#" className="block text-gray-700 hover:text-green-600">
+            Events
+          </a>
+        </nav>
+      </div>
 
       {/* Main Content Area */}
 
